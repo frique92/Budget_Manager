@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Budget_Manager.iml" filepath="$PROJECT_DIR$/.idea/modules/Budget_Manager.iml" group="Budget_Manager" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Budget Manager/task/Budget_Manager-task.iml" filepath="$PROJECT_DIR$/.idea/modules/Budget Manager/task/Budget_Manager-task.iml" group="Budget_Manager/Budget_Manager-task" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Budget Manager/task/Budget_Manager-task_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Budget Manager/task/Budget_Manager-task_main.iml" group="Budget_Manager/Budget_Manager-task" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Budget Manager/task/Budget_Manager-task_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Budget Manager/task/Budget_Manager-task_test.iml" group="Budget_Manager/Budget_Manager-task" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/util/util.iml" filepath="$PROJECT_DIR$/.idea/modules/util/util.iml" group="Budget_Manager/util" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/util/util_main.iml" filepath="$PROJECT_DIR$/.idea/modules/util/util_main.iml" group="Budget_Manager/util" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/util/util_test.iml" filepath="$PROJECT_DIR$/.idea/modules/util/util_test.iml" group="Budget_Manager/util" />
+    </modules>
+  </component>
+</project>
