@@ -10,7 +10,6 @@
 >0
 
 Bye!
-
 [1;31m
 Start test 2[0m
 Choose your action:
@@ -23,7 +22,6 @@
 >0
 
 Bye!
-
 [1;31m
 Start test 3[0m
 Choose your action:
@@ -48,7 +46,6 @@ Balance: $0.00
 >0
 
 Bye!
-
 [1;31m
 Start test 4[0m
 Choose your action:
@@ -111,20 +108,8 @@ Balance: $600.00
 >0
 
 Bye!
-
 [1;31m
 Start test 5[0m
-Choose your action:
-1) Add income
-2) Add purchase
-3) Show list of purchases
-
-4) Balance
-0) Exit
->3
-
-Purchase list is empty
-
 Choose your action:
 1) Add income
 2) Add purchase
@@ -147,26 +132,61 @@ Balance: $600.00
 0) Exit
 >2
 
+
+Choose the type of purchase
+1) Food
+
+2) Clothes
+3) Entertainment
+4) Other
+5) Back
+>1
+
 Enter purchase name:
->Red Fuji Apple
+>Milk
 Enter its price:
->5.99
+>3.5
 Purchase was added!
 
-Choose your action:
-1) Add income
-2) Add purchase
-3) Show list of purchases
+Choose the type of purchase
+1) Food
 
-4) Balance
-0) Exit
+2) Clothes
+3) Entertainment
+4) Other
+5) Back
 >2
 
 Enter purchase name:
->Eggs
+(>Men's Dual Defense Crew Socks 12 Pairs
 Enter its price:
->3.99
+>13
 Purchase was added!
+
+Choose the type of purchase
+1) Food
+
+2) Clothes
+3) Entertainment
+4) Other
+5) Back
+>3
+
+Enter purchase name:
+>Cinema
+Enter its price:
+>8.73
+Purchase was added!
+
+Choose the type of purchase
+1) Food
+
+2) Clothes
+3) Entertainment
+4) Other
+5) Back
+>5
+
 
 Choose your action:
 1) Add income
@@ -177,21 +197,77 @@ Balance: $600.00
 0) Exit
 >3
 
-Red Fuji Apple 5.99
-	Eggs 3.99
-Total sum: $9.98
 
-Choose your action:
-1) Add income
-2) Add purchase
-3) Show list of purchases
+Choose the type of purchase
+1) Food
 
-4) Balance
-0) Exit
->4
+2) Clothes
+3) Entertainment
+4) Other
+5) ALL
+6) Back
+>1
 
+Food:
 
-Balance: $590.02
+Milk $3.50
+Total sum: $3.50
+
+Choose the type of purchase
+1) Food
+
+2) Clothes
+3) Entertainment
+4) Other
+5) ALL
+6) Back
+>2
+
+Clothes:
+-Men's Dual Defense Crew Socks 12 Pairs $13.00
+Total sum: $13.00
+
+Choose the type of purchase
+1) Food
+
+2) Clothes
+3) Entertainment
+4) Other
+5) ALL
+6) Back
+>3
+
+Entertainment:
+Cinema $8.73
+Total sum: $8.73
+
+Choose the type of purchase
+1) Food
+
+2) Clothes
+3) Entertainment
+4) Other
+5) ALL
+6) Back
+>5
+
+All:
+
+Milk $3.50
+-Men's Dual Defense Crew Socks 12 Pairs $13.00
+Cinema $8.73
+Total sum: $25.23
+
+Choose the type of purchase
+1) Food
+
+2) Clothes
+3) Entertainment
+4) Other
+5) ALL
+6) Back
+>6
+
 
 Choose your action:
 1) Add income
@@ -203,4 +279,3 @@ Balance: $590.02
 >0
 
 Bye!
-

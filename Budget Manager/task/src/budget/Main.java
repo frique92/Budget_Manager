@@ -1,8 +1,6 @@
 package budget;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,25 +9,48 @@ public class Main {
     }
 }
 
-class PurchaseManager {
-    private float balance;
-    private final Scanner scanner = new Scanner(System.in);
-    private List<Purchase> purchases = new ArrayList<>();
-    private boolean isWorking;
+enum CategoriesPurchase {
+    FOOD("Food"),
+    CLOTHES("Clothes"),
+    ENTERTAINMENT("Entertainment"),
+    OTHER("Other"),
+    ALL("All");
 
-    public void run() {
-        isWorking = true;
+    private String name;
 
-        while (isWorking) {
-            showMenu();
-            String action = scanner.nextLine();
-            System.out.println();
-            selectAction(action);
-            System.out.println();
+    CategoriesPurchase(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+enum StateMenu {
+    MAIN, PURCHASE, LIST
+}
+
+class Menu {
+    private StateMenu currentState = StateMenu.MAIN;
+
+    public void showMenu() {
+        switch (currentState) {
+            case MAIN:
+                showMainMenu();
+                break;
+            case PURCHASE:
+                showCategoriesForPurchase();
+                break;
+            case LIST:
+                showCategoriesForList();
+                break;
+            default:
+                System.out.println("Unknown action!");
         }
     }
 
-    private void showMenu() {
+    private void showMainMenu() {
         System.out.println("Choose your action:");
         System.out.println("1) Add income");
         System.out.println("2) Add purchase");
@@ -38,16 +59,80 @@ class PurchaseManager {
         System.out.println("0) Exit");
     }
 
+    private void showCategoriesForPurchase() {
+        System.out.println("Choose the type of purchase");
+        System.out.println("1) Food");
+        System.out.println("2) Clothes");
+        System.out.println("3) Entertainment");
+        System.out.println("4) Other");
+        System.out.println("5) Back");
+    }
+
+    private void showCategoriesForList() {
+        System.out.println("Choose the type of purchase");
+        System.out.println("1) Food");
+        System.out.println("2) Clothes");
+        System.out.println("3) Entertainment");
+        System.out.println("4) Other");
+        System.out.println("5) ALL");
+        System.out.println("6) Back");
+    }
+
+    public void setCurrentState(StateMenu currentState) {
+        this.currentState = currentState;
+    }
+
+    public StateMenu getCurrentState() {
+        return currentState;
+    }
+}
+
+class PurchaseManager {
+    private float balance;
+    private final Scanner scanner = new Scanner(System.in);
+    private Map<CategoriesPurchase, ArrayList<Purchase>> purchases = new LinkedHashMap<>();
+    private boolean isWorking;
+    private Menu menu = new Menu();
+
+    public void run() {
+        isWorking = true;
+
+        boolean firstStart = true;
+        while (isWorking) {
+            if (!firstStart) System.out.println();
+            if (firstStart) firstStart = false;
+
+            menu.showMenu();
+            String action = scanner.nextLine();
+            System.out.println();
+            selectAction(action);
+        }
+    }
+
     private void selectAction(String action) {
+        switch (menu.getCurrentState()) {
+            case MAIN:
+                selectActionMain(action);
+                break;
+            case PURCHASE:
+                selectActionPurchase(action);
+                break;
+            case LIST:
+                selectActionList(action);
+                break;
+        }
+    }
+
+    private void selectActionMain(String action) {
         switch (action) {
             case "1":
                 addIncome();
                 break;
             case "2":
-                addPurchase();
+                menu.setCurrentState(StateMenu.PURCHASE);
                 break;
             case "3":
-                showListOfPurchase();
+                menu.setCurrentState(StateMenu.LIST);
                 break;
             case "4":
                 showBalance();
@@ -60,34 +145,120 @@ class PurchaseManager {
         }
     }
 
+    private void selectActionPurchase(String action) {
+        CategoriesPurchase category = null;
+        switch (action) {
+            case "1":
+                category = CategoriesPurchase.FOOD;
+                break;
+            case "2":
+                category = CategoriesPurchase.CLOTHES;
+                break;
+            case "3":
+                category = CategoriesPurchase.ENTERTAINMENT;
+                break;
+            case "4":
+                category = CategoriesPurchase.OTHER;
+                break;
+            case "5":
+                menu.setCurrentState(StateMenu.MAIN);
+                break;
+            default:
+                System.out.println("Unknown action!");
+        }
+
+        if (category != null) addPurchase(category);
+    }
+
+    private void selectActionList(String action) {
+
+        CategoriesPurchase category = null;
+        switch (action) {
+            case "1":
+                category = CategoriesPurchase.FOOD;
+                break;
+            case "2":
+                category = CategoriesPurchase.CLOTHES;
+                break;
+            case "3":
+                category = CategoriesPurchase.ENTERTAINMENT;
+                break;
+            case "4":
+                category = CategoriesPurchase.OTHER;
+                break;
+            case "5":
+                category = CategoriesPurchase.ALL;
+                break;
+            case "6":
+                menu.setCurrentState(StateMenu.MAIN);
+                break;
+            default:
+                System.out.println("Unknown action!");
+        }
+
+        if (category != null) showListOfPurchase(category);
+    }
+
+
     private void addIncome() {
         System.out.println("Enter income:");
         balance += Float.parseFloat(scanner.nextLine());
         System.out.println("Income was added!");
     }
 
-    private void addPurchase() {
+    private void addPurchase(CategoriesPurchase category) {
         System.out.println("Enter purchase name:");
         String name = scanner.nextLine();
         System.out.println("Enter its price:");
         float price = Float.parseFloat(scanner.nextLine());
 
-        Purchase purchase = new Purchase(name, price);
-        purchases.add(purchase);
+        Purchase purchase = new Purchase.Builder()
+                .setName(name)
+                .setPrice(price)
+                .setCategory(category)
+                .build();
+
+        if (purchases.containsKey(category)) {
+            purchases.get(category).add(purchase);
+        } else {
+            ArrayList<Purchase> arr = new ArrayList<>();
+            arr.add(purchase);
+            purchases.put(category, arr);
+        }
+
 
         System.out.println("Purchase was added!");
 
         balance -= price;
     }
 
-    private void showListOfPurchase() {
-        if (purchases.size() == 0) {
+    private void showListOfPurchase(CategoriesPurchase category) {
+        System.out.println(category.getName() + ":");
+        if (category == CategoriesPurchase.ALL) showAllList();
+        else showCategoryList(category);
+    }
+
+    private void showAllList() {
+        float total = 0;
+
+        for (CategoriesPurchase category : purchases.keySet()) {
+            for (Purchase purchase : purchases.get(category)) {
+                total += purchase.getPrice();
+                System.out.println(purchase);
+            }
+        }
+
+        System.out.printf("Total sum: $%.2f\n", total);
+    }
+
+    private void showCategoryList(CategoriesPurchase category) {
+        if (!purchases.containsKey(category)) {
             System.out.println("Purchase list is empty");
             return;
         }
 
         float total = 0;
-        for (Purchase purchase : purchases) {
+        for (Purchase purchase : purchases.get(category)) {
             total += purchase.getPrice();
             System.out.println(purchase);
         }
@@ -109,18 +280,49 @@ class PurchaseManager {
 class Purchase {
     private String name;
     private float price;
+    private CategoriesPurchase category;
 
-    Purchase(String name, float price) {
+    Purchase(String name, float price, CategoriesPurchase category) {
         this.name = name;
         this.price = price;
+        this.category = category;
     }
 
     @Override
     public String toString() {
-        return String.format("%s %.2f", name, price);
+        return String.format("%s $%.2f", name, price);
     }
 
     public float getPrice() {
         return price;
+    }
+
+    public CategoriesPurchase getCategory() {
+        return category;
+    }
+
+    public static class Builder {
+        private String name;
+        private float price;
+        private CategoriesPurchase category;
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setPrice(float price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder setCategory(CategoriesPurchase category) {
+            this.category = category;
+            return this;
+        }
+
+        public Purchase build() {
+            return new Purchase(name, price, category);
+        }
     }
 }
