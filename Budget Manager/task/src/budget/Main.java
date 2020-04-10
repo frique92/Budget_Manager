@@ -1,5 +1,9 @@
 package budget;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 public class Main {
@@ -56,6 +60,8 @@ class Menu {
         System.out.println("2) Add purchase");
         System.out.println("3) Show list of purchases");
         System.out.println("4) Balance");
+        System.out.println("5) Save");
+        System.out.println("6) Load");
         System.out.println("0) Exit");
     }
 
@@ -93,6 +99,7 @@ class PurchaseManager {
     private Map<CategoriesPurchase, ArrayList<Purchase>> purchases = new LinkedHashMap<>();
     private boolean isWorking;
     private Menu menu = new Menu();
+    private String fileName = "purchases.txt";
 
     public void run() {
         isWorking = true;
@@ -136,6 +143,12 @@ class PurchaseManager {
                 break;
             case "4":
                 showBalance();
+                break;
+            case "5":
+                savePurchases();
+                break;
+            case "6":
+                loadPurchases();
                 break;
             case "0":
                 exit();
@@ -275,6 +288,68 @@ class PurchaseManager {
         isWorking = false;
     }
 
+    private void loadPurchases() {
+        purchases.clear();
+        File file = new File(fileName);
+
+        try (Scanner scannerFile = new Scanner(file)) {
+
+            CategoriesPurchase category = null;
+            ArrayList<Purchase> arr = new ArrayList<>();
+            while (scannerFile.hasNext()) {
+                String line = scannerFile.nextLine();
+                if (line.matches("BALANCE.*")) {
+                    balance = Float.parseFloat(line.split(":")[1]);
+                } else if (line.matches("--.*")) {
+                    CategoriesPurchase curCategory = CategoriesPurchase.valueOf(line.substring(2, line.length()));
+                    if (category != null && curCategory != category) {
+                        purchases.put(category, arr);
+                        arr = new ArrayList<>();
+                    }
+                    category = curCategory;
+                } else {
+                    String[] dataPurchase = line.split(";");
+                    Purchase purchase = new Purchase.Builder()
+                            .setCategory(category)
+                            .setName(dataPurchase[0])
+                            .setPrice(Float.parseFloat(dataPurchase[1]))
+                            .build();
+                    arr.add(purchase);
+                }
+            }
+            if (arr.size() > 0) purchases.put(category, arr);
+
+            System.out.println("Purchases were loaded!");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+
+    }
+
+    private void savePurchases() {
+
+        File file = new File(fileName);
+
+        try (PrintWriter writer = new PrintWriter(file)) {
+
+            for (Map.Entry<CategoriesPurchase, ArrayList<Purchase>> entry : purchases.entrySet()) {
+                writer.println("--" + entry.getKey());
+
+                for (Purchase purchase : entry.getValue()) {
+                    writer.println(purchase.getName() + ";" + purchase.getPrice());
+                }
+            }
+
+            writer.println("BALANCE:" + balance);
+
+            System.out.println("Purchases were saved!");
+
+        } catch (IOException e) {
+            System.out.println("File not found.");
+        }
+
+    }
+
 }
 
 class Purchase {
@@ -295,6 +370,10 @@ class Purchase {
 
     public float getPrice() {
         return price;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public CategoriesPurchase getCategory() {
