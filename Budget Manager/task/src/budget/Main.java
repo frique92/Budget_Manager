@@ -289,6 +289,7 @@ class PurchaseManager {
     }
 
     private void loadPurchases() {
+
         purchases.clear();
         File file = new File(fileName);
 

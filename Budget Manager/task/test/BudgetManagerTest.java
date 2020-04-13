@@ -53,13 +53,19 @@ public class BudgetManagerTest extends BaseStageTest<String> {
                     "4\nSensodyne Pronamel Toothpaste\n19.74\n" +
                     "4\nChick-fil-A $10 Gift Card\n10\n" +
                     "4\nDebt\n3.50\n" +
-                    "5\n5\n0").setCheckFunc(BudgetManagerTest::test5),
+                    "5\n5\n0")
+                .setCheckFunc(BudgetManagerTest::test5),
 
             new TestCase<String>()
                 .setInput("6\n4\n3\n5\n1\n6\n0")
-                .setCheckFunc(BudgetManagerTest::test6)
+                .setCheckFunc(BudgetManagerTest::test6),
+
+            new TestCase<String>()
+                .setInput("7\n1\n2\n3\n4\n4\n6\n7\n1\n2\n3\n1\n4\n0")
+                .setCheckFunc(BudgetManagerTest::test7)
         );
     }
+
 
     //Checking program stop
     private static CheckResult test1(String reply, String attach) {
@@ -154,7 +160,7 @@ public class BudgetManagerTest extends BaseStageTest<String> {
         File file = new File("purchases.txt");
         if (!file.exists()) {
             return new CheckResult(false,
-                "Your program should create purchases.txt file and save purchases there!");
+                "Your program should create purchase.txt file and save purchases there!");
         }
         return new CheckResult(true);
     }
@@ -232,7 +238,6 @@ public class BudgetManagerTest extends BaseStageTest<String> {
                 "Your all total sum is wrong!");
         }
 
-
         //Food list
 
         String foodList = blocks[8];
@@ -266,8 +271,7 @@ public class BudgetManagerTest extends BaseStageTest<String> {
             return new CheckResult(false,
                 "Total sum of food list is wrong. Expected:\n" +
                     "Total sum: $90.71\n" +
-                    "Your output:\n" +
-                    totalSum);
+                    "Your output:\n" + totalSum);
         }
 
         double foodTotalSum = Double.parseDouble(matcher.group());
@@ -275,6 +279,106 @@ public class BudgetManagerTest extends BaseStageTest<String> {
         if (Math.abs(foodTotalSum - 90.71) > 0.0001) {
             return new CheckResult(false,
                 "Your food total sum is wrong!");
+        }
+
+        return new CheckResult(true);
+    }
+
+
+    //Sorting check
+    private static CheckResult test7(String reply, String attach) {
+
+        String[] blocks = reply.split("\n(\n+)?\n");
+
+        if (blocks.length != 22) {
+            return new CheckResult(false,
+                "Your program shows wrong blocks of output. Expected: 22\n" +
+                    "You have: " + blocks.length + "\n" +
+                    "Make sure that you print an empty line after each chosen action");
+        }
+
+        String sortEmptyAllPurchases = blocks[2];
+
+        if (!sortEmptyAllPurchases.contains("list is empty")) {
+            return new CheckResult(false,
+                "\"Sort all purchases\" item shouldn't work if there are no purchases in the list");
+        }
+
+        String sortByEmptyType = blocks[4];
+
+        if (sortByEmptyType.contains("list is empty")) {
+            return new CheckResult(false,
+                "\"Sort by type\" item should work even if there are no purchases in the list");
+        }
+
+        String sortEmptyCertainType = blocks[7];
+
+        if (!sortEmptyCertainType.contains("list is empty")) {
+            return new CheckResult(false,
+                "\"Sort certain type\" item shouldn't work if there are no purchases in the certain list");
+        }
+
+        String allSorted = blocks[13];
+        String rightSorted = "Almond 250g $35.43\n" +
+            "Skate rental $30.00\n" +
+            "FIJI Natural Artesian Water $25.98\n" +
+            "Wrangler Men's Stretch Cargo Pant $19.97\n" +
+            "Sensodyne Pronamel Toothpaste $19.74\n" +
+            "Men's Dual Defense Crew Socks 12 Pairs $13.00\n" +
+            "LEGO DUPLO Town Farm Animals $10.10\n" +
+            "Chick-fil-A $10 Gift Card $10.00\n" +
+            "Cinema $8.73\n" +
+            "Gildan LT $8.61\n" +
+            "Hershey's milk chocolate bars $8.54\n" +
+            "Keystone Ground Bee $6.28\n" +
+            "Red Fuji Apple $5.99\n" +
+            "Eggs $3.99\n" +
+            "Milk $3.50\n" +
+            "Debt $3.50\n" +
+            "Great Value Broccoli Florets $1.00\n";
+
+        if (!allSorted.contains(rightSorted)) {
+            return new CheckResult(false,
+                "Your program sort all purchases wrong!\n" +
+                    "Expected:\n" +
+                    rightSorted + "\n" +
+                    "Your output:\n" +
+                    allSorted);
+        }
+
+
+        String sortedByType = blocks[15];
+        String rightSortedByType = "Food - $90.71\n" +
+            "Entertainment - $48.83\n" +
+            "Clothes - $41.58\n" +
+            "Other - $33.24";
+
+        if (!sortedByType.contains(rightSortedByType)) {
+            return new CheckResult(false,
+                "Your program sort by type wrong!\n" +
+                    "Expected:\n" +
+                    rightSortedByType + "\n" +
+                    "Your output:\n" +
+                    sortedByType);
+        }
+
+        String sortedCertainType = blocks[18];
+        String rightSortedCertainType = "Almond 250g $35.43\n" +
+            "FIJI Natural Artesian Water $25.98\n" +
+            "Hershey's milk chocolate bars $8.54\n" +
+            "Keystone Ground Bee $6.28\n" +
+            "Red Fuji Apple $5.99\n" +
+            "Eggs $3.99\n" +
+            "Milk $3.50\n" +
+            "Great Value Broccoli Florets $1.00";
+
+        if (!sortedCertainType.contains(rightSortedCertainType)) {
+            return new CheckResult(false,
+                "Your program sort certain type wrong!\n" +
+                    "Expected:\n" +
+                    rightSortedCertainType + "\n" +
+                    "Your output:\n" +
+                    sortedCertainType);
         }
 
         return new CheckResult(true);
