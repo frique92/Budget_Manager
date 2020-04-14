@@ -32,7 +32,7 @@ enum CategoriesPurchase {
 }
 
 enum StateMenu {
-    MAIN, PURCHASE, LIST
+    MAIN, PURCHASE, LIST, SORT, SORT_CERTAIN_TYPE
 }
 
 class Menu {
@@ -49,6 +49,12 @@ class Menu {
             case LIST:
                 showCategoriesForList();
                 break;
+            case SORT:
+                showAnalyze();
+                break;
+            case SORT_CERTAIN_TYPE:
+                showAnalyzeCertainType();
+                break;
             default:
                 System.out.println("Unknown action!");
         }
@@ -62,6 +68,7 @@ class Menu {
         System.out.println("4) Balance");
         System.out.println("5) Save");
         System.out.println("6) Load");
+        System.out.println("7) Analyze (Sort)");
         System.out.println("0) Exit");
     }
 
@@ -84,6 +91,22 @@ class Menu {
         System.out.println("6) Back");
     }
 
+    private void showAnalyze() {
+        System.out.println("How do you want to sort?");
+        System.out.println("1) Sort all purchases");
+        System.out.println("2) Sort by type");
+        System.out.println("3) Sort certain type");
+        System.out.println("4) Back");
+    }
+
+    private void showAnalyzeCertainType() {
+        System.out.println("Choose the type of purchase");
+        System.out.println("1) Food");
+        System.out.println("2) Clothes");
+        System.out.println("3) Entertainment");
+        System.out.println("4) Other");
+    }
+
     public void setCurrentState(StateMenu currentState) {
         this.currentState = currentState;
     }
@@ -104,15 +127,14 @@ class PurchaseManager {
     public void run() {
         isWorking = true;
 
-        boolean firstStart = true;
         while (isWorking) {
-            if (!firstStart) System.out.println();
-            if (firstStart) firstStart = false;
-
             menu.showMenu();
             String action = scanner.nextLine();
             System.out.println();
+
+            StateMenu currentMenu = menu.getCurrentState();
             selectAction(action);
+            if (currentMenu == menu.getCurrentState()) System.out.println();
         }
     }
 
@@ -126,6 +148,12 @@ class PurchaseManager {
                 break;
             case LIST:
                 selectActionList(action);
+                break;
+            case SORT:
+                selectActionAnalyze(action);
+                break;
+            case SORT_CERTAIN_TYPE:
+                selectActionAnalyzeCertainType(action);
                 break;
         }
     }
@@ -149,6 +177,9 @@ class PurchaseManager {
                 break;
             case "6":
                 loadPurchases();
+                break;
+            case "7":
+                menu.setCurrentState(StateMenu.SORT);
                 break;
             case "0":
                 exit();
@@ -212,6 +243,51 @@ class PurchaseManager {
         if (category != null) showListOfPurchase(category);
     }
 
+    private void selectActionAnalyze(String action) {
+        switch (action) {
+            case "1":
+                analyzePurchases("ALL");
+                break;
+            case "2":
+                analyzePurchases("TYPES");
+                break;
+            case "3":
+                menu.setCurrentState(StateMenu.SORT_CERTAIN_TYPE);
+                break;
+            case "4":
+                menu.setCurrentState(StateMenu.MAIN);
+                break;
+            default:
+                System.out.println("Unknown action!");
+        }
+    }
+
+    private void selectActionAnalyzeCertainType(String action) {
+
+        CategoriesPurchase category = null;
+        switch (action) {
+            case "1":
+                category = CategoriesPurchase.FOOD;
+                break;
+            case "2":
+                category = CategoriesPurchase.CLOTHES;
+                break;
+            case "3":
+                category = CategoriesPurchase.ENTERTAINMENT;
+                break;
+            case "4":
+                category = CategoriesPurchase.OTHER;
+                break;
+            default:
+                System.out.println("Unknown action!");
+        }
+
+        if (category != null) {
+            analyzePurchasesByCertainType(category);
+            menu.setCurrentState(StateMenu.SORT);
+            System.out.println();
+        }
+    }
 
     private void addIncome() {
         System.out.println("Enter income:");
@@ -349,6 +425,109 @@ class PurchaseManager {
             System.out.println("File not found.");
         }
 
+    }
+
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> unsortMap) {
+
+        List<Map.Entry<K, V>> list =
+                new LinkedList<Map.Entry<K, V>>(unsortMap.entrySet());
+
+        list.sort(new Comparator<Map.Entry<K, V>>() {
+            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+
+        Map<K, V> result = new LinkedHashMap<K, V>();
+        for (Map.Entry<K, V> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+
+        return result;
+
+    }
+
+    private void analyzePurchases(String type) {
+        switch (type) {
+            case "ALL":
+                analyzePurchasesAll();
+                break;
+            case "TYPES":
+                analyzePurchasesByTypes();
+                break;
+        }
+    }
+
+    private void analyzePurchasesAll() {
+        if (purchases.size() == 0) {
+            System.out.println("Purchase list is empty");
+            return;
+        }
+
+        Map<Purchase, Float> mapPurchases = new HashMap<>();
+
+        for (ArrayList<Purchase> value : purchases.values()) {
+            for (Purchase purchase : value) {
+                mapPurchases.put(purchase, purchase.getPrice());
+            }
+        }
+
+        Map<Purchase, Float> sortedMap = sortByValue(mapPurchases);
+
+        System.out.println("All:");
+        float total = 0;
+        for (Purchase purchase : sortedMap.keySet()) {
+            System.out.println(purchase);
+            total += purchase.getPrice();
+        }
+        System.out.printf("Total sum: $%.2f\n", total);
+    }
+
+    private void analyzePurchasesByTypes() {
+
+        Map<CategoriesPurchase, Float> mapCategories = new HashMap<>();
+
+        for (CategoriesPurchase category : purchases.keySet()) {
+            float total = 0;
+            for (Purchase purchase : purchases.get(category)) {
+                total += purchase.getPrice();
+            }
+            mapCategories.put(category, total);
+        }
+
+        Map<CategoriesPurchase, Float> sortedMap = sortByValue(mapCategories);
+
+        System.out.println("Types:");
+        float total = 0;
+        for (CategoriesPurchase category : sortedMap.keySet()) {
+            System.out.printf("%s - $%.2f\n", category.getName(), sortedMap.get(category));
+            total += sortedMap.get(category);
+        }
+        System.out.printf("Total sum: $%.2f\n", total);
+    }
+
+    private void analyzePurchasesByCertainType(CategoriesPurchase category) {
+
+        if (!purchases.containsKey(category)) {
+            System.out.println("Purchase list is empty");
+            return;
+        }
+
+        Map<Purchase, Float> mapPurchases = new HashMap<>();
+
+        for (Purchase purchase : purchases.get(category)) {
+            mapPurchases.put(purchase, purchase.getPrice());
+        }
+
+        Map<Purchase, Float> sortedMap = sortByValue(mapPurchases);
+
+        System.out.printf("%s:", category.getName());
+        float total = 0;
+        for (Purchase purchase : sortedMap.keySet()) {
+            System.out.println(purchase);
+            total += purchase.getPrice();
+        }
+        System.out.printf("Total sum: $%.2f\n", total);
     }
 
 }

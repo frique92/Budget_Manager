@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="BudgetManagerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-04-10T13:33:07" hostname="GopherPC" time="0.496">
+<testsuite name="BudgetManagerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-04-14T09:51:42" hostname="GopherPC" time="0.497">
   <properties/>
-  <testcase name="start" classname="BudgetManagerTest" time="0.496"/>
+  <testcase name="start" classname="BudgetManagerTest" time="0.497"/>
   <system-out><![CDATA[?[1;31m
 Start test 1?[0m
 Choose your action:
@@ -11,10 +11,12 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >0
 
 Bye!
+
 ?[1;31m
 Start test 2?[0m
 Choose your action:
@@ -24,10 +26,12 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >0
 
 Bye!
+
 ?[1;31m
 Start test 3?[0m
 Choose your action:
@@ -37,6 +41,7 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >4
 
@@ -49,10 +54,12 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >0
 
 Bye!
+
 ?[1;31m
 Start test 4?[0m
 Choose your action:
@@ -62,6 +69,7 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >1
 
@@ -76,6 +84,7 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >4
 
@@ -88,6 +97,7 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >1
 
@@ -102,6 +112,7 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >4
 
@@ -114,10 +125,12 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >0
 
 Bye!
+
 ?[1;31m
 Start test 5?[0m
 Choose your action:
@@ -127,6 +140,7 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >1
 
@@ -141,9 +155,9 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >2
-
 
 Choose the type of purchase
 1) Food
@@ -391,7 +405,6 @@ Choose the type of purchase
 5) Back
 >5
 
-
 Choose your action:
 1) Add income
 2) Add purchase
@@ -399,6 +412,7 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >5
 
@@ -411,10 +425,12 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >0
 
 Bye!
+
 ?[1;31m
 Start test 6?[0m
 Choose your action:
@@ -424,6 +440,7 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >6
 
@@ -436,6 +453,7 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >4
 
@@ -448,9 +466,9 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
 0) Exit
 >3
-
 
 Choose the type of purchase
 1) Food
@@ -510,6 +528,73 @@ Choose the type of purchase
 6) Back
 >6
 
+Choose your action:
+1) Add income
+2) Add purchase
+3) Show list of purchases
+4) Balance
+5) Save
+6) Load
+7) Analyze (Sort)
+0) Exit
+>0
+
+Bye!
+
+?[1;31m
+Start test 7?[0m
+Choose your action:
+1) Add income
+2) Add purchase
+3) Show list of purchases
+4) Balance
+5) Save
+6) Load
+7) Analyze (Sort)
+0) Exit
+>7
+
+How do you want to sort?
+1) Sort all purchases
+2) Sort by type
+3) Sort certain type
+4) Back
+>1
+
+Purchase list is empty
+
+How do you want to sort?
+1) Sort all purchases
+2) Sort by type
+3) Sort certain type
+4) Back
+>2
+
+Types:
+Total sum: $0.00
+
+How do you want to sort?
+1) Sort all purchases
+2) Sort by type
+3) Sort certain type
+4) Back
+>3
+
+Choose the type of purchase
+1) Food
+2) Clothes
+3) Entertainment
+4) Other
+>4
+
+Purchase list is empty
+
+How do you want to sort?
+1) Sort all purchases
+2) Sort by type
+3) Sort certain type
+4) Back
+>4
 
 Choose your action:
 1) Add income
@@ -518,10 +603,108 @@ Choose your action:
 4) Balance
 5) Save
 6) Load
+7) Analyze (Sort)
+0) Exit
+>6
+
+Purchases were loaded!
+
+Choose your action:
+1) Add income
+2) Add purchase
+3) Show list of purchases
+4) Balance
+5) Save
+6) Load
+7) Analyze (Sort)
+0) Exit
+>7
+
+How do you want to sort?
+1) Sort all purchases
+2) Sort by type
+3) Sort certain type
+4) Back
+>1
+
+All:
+Almond 250g $35.43
+Skate rental $30.00
+FIJI Natural Artesian Water $25.98
+Wrangler Men's Stretch Cargo Pant $19.97
+Sensodyne Pronamel Toothpaste $19.74
+Men's Dual Defense Crew Socks 12 Pairs $13.00
+LEGO DUPLO Town Farm Animals $10.10
+Chick-fil-A $10 Gift Card $10.00
+Cinema $8.73
+Gildan LT $8.61
+Hershey's milk chocolate bars $8.54
+Keystone Ground Bee $6.28
+Red Fuji Apple $5.99
+Eggs $3.99
+Milk $3.50
+Debt $3.50
+Great Value Broccoli Florets $1.00
+Total sum: $214.36
+
+How do you want to sort?
+1) Sort all purchases
+2) Sort by type
+3) Sort certain type
+4) Back
+>2
+
+Types:
+Food - $90.71
+Entertainment - $48.83
+Clothes - $41.58
+Other - $33.24
+Total sum: $214.36
+
+How do you want to sort?
+1) Sort all purchases
+2) Sort by type
+3) Sort certain type
+4) Back
+>3
+
+Choose the type of purchase
+1) Food
+2) Clothes
+3) Entertainment
+4) Other
+>1
+
+Food:Almond 250g $35.43
+FIJI Natural Artesian Water $25.98
+Hershey's milk chocolate bars $8.54
+Keystone Ground Bee $6.28
+Red Fuji Apple $5.99
+Eggs $3.99
+Milk $3.50
+Great Value Broccoli Florets $1.00
+Total sum: $90.71
+
+How do you want to sort?
+1) Sort all purchases
+2) Sort by type
+3) Sort certain type
+4) Back
+>4
+
+Choose your action:
+1) Add income
+2) Add purchase
+3) Show list of purchases
+4) Balance
+5) Save
+6) Load
+7) Analyze (Sort)
 0) Exit
 >0
 
 Bye!
+
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
